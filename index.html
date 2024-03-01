@@ -14,8 +14,11 @@
         ];
 
         var isAuthenticated = false;
-        var username = prompt('Enter username:');
-        var password = prompt('Enter password:');
+        var username = prompt('Enter username:').trim(); // Added trim() based on previous advice
+        var password = prompt('Enter password:').trim(); // Added trim() based on previous advice
+
+        // Log the inputs to the console for debugging
+        console.log('Entered username:', username, 'Entered password:', password);
 
         for (var i = 0; i < allowedCredentials.length; i++) {
             if (username === allowedCredentials[i].username && password === allowedCredentials[i].password) {
