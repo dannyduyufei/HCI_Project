@@ -27,7 +27,7 @@
             }
         }
 
-        if (isAuthenticated) {
+        if (!isAuthenticated) {
             alert('Incorrect username or password.');
             window.location = 'about:blank'; // Redirect to a blank page
         }
