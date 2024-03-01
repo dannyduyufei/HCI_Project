@@ -7,14 +7,24 @@
     <title>Your ROS Footage Site</title>
     <!-- Add a link to your stylesheet here if you have one -->
     <script>
-        var correctUsername = 'hciproject'; 
-        var correctPassword = 'lionsbot'; 
+        var allowedCredentials = [
+            { username: 'user1', password: 'pass1' },
+            { username: 'user2', password: 'pass2' },
+            // Add more credentials here
+        ];
 
+        var isAuthenticated = false;
         var username = prompt('Enter username:');
         var password = prompt('Enter password:');
 
-        if(username !== correctUsername || password !== correctPassword) {
-            // Incorrect username or password, redirect back or show an error
+        for (var i = 0; i < allowedCredentials.length; i++) {
+            if (username === allowedCredentials[i].username && password === allowedCredentials[i].password) {
+                isAuthenticated = true;
+                break;
+            }
+        }
+
+        if (!isAuthenticated) {
             alert('Incorrect username or password.');
             window.location = 'about:blank'; // Redirect to a blank page
         }
