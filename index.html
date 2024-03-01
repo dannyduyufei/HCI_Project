@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your ROS Footage Site</title>
     <!-- Add a link to your stylesheet here if you have one -->
+    <script>
+        var correctUsername = 'yourUsername'; // replace with your desired username
+        var correctPassword = 'yourPassword'; // replace with your desired password
+
+        var username = prompt('Enter username:');
+        var password = prompt('Enter password:');
+
+        if(username !== correctUsername || password !== correctPassword) {
+            // Incorrect username or password, redirect back or show an error
+            alert('Incorrect username or password.');
+            window.location = 'about:blank'; // Redirect to a blank page
+        }
+        // If correct, the script will not redirect and the content will load as normal
+    </script>
 </head>
 <body>
     <header>
