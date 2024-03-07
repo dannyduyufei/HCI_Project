@@ -12,19 +12,17 @@
 
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
-            // Use Axios for the GET request to your Worker's endpoint
-            axios.get('https://production.hci.dannyduyufei.workers.dev/data')
-                .then(function (response) {
-                    // Handle success
-                    console.log(response.data);
-                    document.getElementById('ros-data-section').innerText = response.data;
-                })
-                .catch(function (error) {
-                    // Handle error
-                    console.log('Error fetching data:', error);
-                    document.getElementById('ros-data-section').innerText = 'Error fetching data.';
-                });
-        }
+        fetch('https://production.hci.dannyduyufei.workers.dev/data')
+            .then(response => response.json()) // Parse the JSON response
+            .then(data => {
+                // Use the data from the 'Detected_Human' key
+                document.getElementById('ros-data-section').innerText = data['Detected_Human'] || "No data";
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('ros-data-section').innerText = 'Error fetching data.';
+            });
+    }
 
         // Call fetchROSData on page load
         window.onload = function() {
