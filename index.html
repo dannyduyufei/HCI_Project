@@ -6,32 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your ROS Footage Site</title>
     <!-- Add a link to your stylesheet here if you have one -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        var allowedCredentials = [
-            { username: 'hciproject', password: 'lionsbot' },
-            { username: 'user2', password: 'pass2' },
-            // Add more credentials here
-        ];
+        // Authentication code as previously defined...
 
-        var isAuthenticated = false;
-        var username = prompt('Enter username:').trim(); // Added trim() based on previous advice
-        var password = prompt('Enter password:').trim(); // Added trim() based on previous advice
-
-        // Log the inputs to the console for debugging
-        console.log('Entered username:', username, 'Entered password:', password);
-
-        for (var i = 0; i < allowedCredentials.length; i++) {
-            if (username === allowedCredentials[i].username && password === allowedCredentials[i].password) {
-                isAuthenticated = true;
-                break;
-            }
+        // Function to fetch data from the server and update the webpage
+        function fetchROSData() {
+            // Use Axios for the GET request to your Worker's endpoint
+            axios.get('https://hci.dannyduyufei.workers.dev/data')
+                .then(function (response) {
+                    // Handle success
+                    console.log(response.data);
+                    document.getElementById('ros-data-section').innerText = response.data;
+                })
+                .catch(function (error) {
+                    // Handle error
+                    console.log('Error fetching data:', error);
+                    document.getElementById('ros-data-section').innerText = 'Error fetching data.';
+                });
         }
 
-        if (!isAuthenticated) {
-            alert('Incorrect username or password.');
-            window.location = 'about:blank'; // Redirect to a blank page
-        }
-        // If correct, the script will not redirect and the content will load as normal
+        // Call fetchROSData on page load
+        window.onload = function() {
+            fetchROSData();
+            // Optionally set an interval to refresh the data every 10 seconds
+            // setInterval(fetchROSData, 10000);
+        };
     </script>
 </head>
 <body>
@@ -56,6 +56,12 @@
                 <source src="path_to_your_video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
+        </section>
+
+        <!-- New Section for ROS Data -->
+        <section>
+            <h2>ROS Data</h2>
+            <p id="ros-data-section">Waiting for ROS data...</p>
         </section>
 
         <section>
