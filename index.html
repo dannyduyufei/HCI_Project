@@ -12,11 +12,12 @@
 
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
+        // Fetching data from your Worker's endpoint
         fetch('https://production.hci.dannyduyufei.workers.dev/data')
-            .then(response => response.json()) // Parse the JSON response
+            .then(response => response.text()) // Getting the response as text
             .then(data => {
-                // Use the data from the 'Detected_Human' key
-                document.getElementById('ros-data-section').innerText = data['Detected_Human'] || "No data";
+                // Display the fetched data in the 'ros-data-section' element
+                document.getElementById('ros-data-section').innerText = data;
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -24,9 +25,8 @@
             });
     }
 
-        // Call fetchROSData on page load
-        window.onload = function() {
-            fetchROSData();
+    window.onload = function() {
+        fetchROSData();
             // Optionally set an interval to refresh the data every 10 seconds
             // setInterval(fetchROSData, 10000);
         };
@@ -58,7 +58,7 @@
 
         <!-- New Section for ROS Data -->
         <section>
-            <h2>ROS Data2</h2>
+            <h2>ROS Data1</h2>
             <p id="ros-data-section">Waiting for ROS data...</p>
         </section>
 
