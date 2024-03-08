@@ -61,7 +61,7 @@
         .then(data => {
             console.log(data); // Log data for debugging
             // Make sure the key matches exactly what your worker is returning, including spaces and punctuation
-            document.getElementById('ros-data-section').innerText = data['Current value:'] || "No data";
+            document.getElementById('ros-data-section').innerText = data.views || "No data";
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
