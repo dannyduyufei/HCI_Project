@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your ROS Footage Site</title>
+    <title>HCI ROS Info Site</title>
     <!-- Add a link to your stylesheet here if you have one -->
 </head>
 <body>
     <header>
-        <h1>Welcome to My ROS Footage Showcase</h1>
+        <h1>Welcome to My ROS Showcase</h1>
     </header>
 
     <nav>
@@ -22,19 +22,9 @@
             <p>This section can contain information about your ROS projects, your objectives, and any other relevant details that visitors should know about.</p>
         </section>
 
-        <section>
-            <h2>Latest Footage</h2>
-            <p>Here you can embed or link to your latest ROS footage. For example:</p>
-            <video controls width="250">
-                <source src="path_to_your_video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </section>
-
-        <!-- New Section for ROS Data -->
-        <section>
+        <section id="ros-data-section">
             <h2>ROS Data</h2>
-            <p id="ros-data-section">Waiting for ROS data...</p>
+            <p>Waiting for ROS data...</p>
         </section>
 
         <section>
@@ -50,24 +40,24 @@
     <script>
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
-    fetch('https://hci.dannyduyufei.workers.dev/data') // Use the correct URL here
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        })
-        .then(data => {
-            console.log(data); // Log data for debugging
-            // Make sure the key matches exactly what your worker is returning, including spaces and punctuation
-            document.getElementById('ros-data-section').innerText = data.views || "No data";
-        })
-        .catch(error => {
-            console.error('Error fetching data: ', error);
-            document.getElementById('ros-data-section').innerText = 'Error fetching data.';
-        });
-}
+            fetch('https://hci.dannyduyufei.workers.dev/data') // Change to the correct URL
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    // Assuming the KV data is in the format { "views": "number" }
+                    // Update the ID if necessary to match your HTML
+                    document.querySelector('#ros-data-section p').innerText = data.views || "No data";
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                    document.querySelector('#ros-data-section p').innerText = 'Error fetching data.';
+                });
+        }
 
         window.onload = function() {
             fetchROSData();
