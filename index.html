@@ -12,12 +12,11 @@
 
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
-        // Fetching data from your Worker's endpoint
         fetch('https://production.hci.dannyduyufei.workers.dev/data')
-            .then(response => response.text()) // Getting the response as text
+            .then(response => response.json()) // Parse the JSON response
             .then(data => {
-                // Display the fetched data in the 'ros-data-section' element
-                document.getElementById('ros-data-section').innerText = data;
+                // Use the data from the 'Detected_Human' key
+                document.getElementById('ros-data-section').innerText = data['Detected_Human'] || "No data";
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
