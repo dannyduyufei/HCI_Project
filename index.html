@@ -17,14 +17,21 @@
     </nav>
 
     <main>
+        <section id="ros-data-section">
+            <h2>ROS Data</h2>
+            <p>Number of Detected People: <span id="detected-people">Waiting for data...</span></p>
+            <p>Camera Handler Status: <span id="image-status">Waiting for data...</span></p>
+            <p>Approval Result: <span id="approval-result">Waiting for data...</span></p>
+            <p>Caption: <span id="caption">Waiting for data...</span></p>
+            <p>AI Response: <span id="ai-response">Waiting for data...</span></p>
+            <p>Emotion Response: <span id="emotion-response">Waiting for data...</span></p>
+            <p>Speaker Status: <span id="speaker-status">Waiting for data...</span></p>
+            <p>Movement Status: <span id="movement-status">Waiting for data...</span></p>
+        </section>
+
         <section>
             <h2>About the Project</h2>
             <p>This section can contain information about your ROS projects, your objectives, and any other relevant details that visitors should know about.</p>
-        </section>
-
-        <section id="ros-data-section">
-            <h2>Number of Detected People:</h2>
-            <p>Waiting for ROS data...</p>
         </section>
 
         <section>
@@ -40,7 +47,7 @@
     <script>
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
-            fetch('https://hci.dannyduyufei.workers.dev/data') // Change to the correct URL
+            fetch('https://hci.dannyduyufei.workers.dev/') // Use the correct URL endpoint for fetching data
                 .then(response => {
                     if (response.ok) {
                         return response.json();
@@ -49,19 +56,24 @@
                     }
                 })
                 .then(data => {
-                    // Assuming the KV data is in the format { "views": "number" }
-                    // Update the ID if necessary to match your HTML
-                    document.querySelector('#ros-data-section p').innerText = data.views || "No data";
+                    // Update each field with the corresponding data
+                    document.getElementById('detected-people').innerText = data.Detected_Human || "No data";
+                    document.getElementById('image-status').innerText = data.Image_Status || "No data";
+                    document.getElementById('approval-result').innerText = data.Approval || "No data";
+                    document.getElementById('caption').innerText = data.Captioning || "No data";
+                    document.getElementById('ai-response').innerText = data.AI_Response || "No data";
+                    document.getElementById('emotion-response').innerText = data.Emotion_Response || "No data";
+                    document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
+                    document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                 })
                 .catch(error => {
                     console.error('Error fetching data: ', error);
-                    document.querySelector('#ros-data-section p').innerText = 'Error fetching data.';
                 });
         }
 
         window.onload = function() {
             fetchROSData();
-            // Optionally set an interval to refresh the data every 10 seconds
+            // Refresh the data every second
             setInterval(fetchROSData, 1000);
         };
     </script>
