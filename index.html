@@ -27,7 +27,7 @@
             <p>Emotion Response: <span id="emotion-response">Waiting for data...</span></p>
             <p>Speaker Status: <span id="speaker-status">Waiting for data...</span></p>
             <p>Movement Status: <span id="movement-status">Waiting for data...</span></p>
-            <p>Response Duration: <span id="response-duration">Waiting for data...</span></p> <!-- New feature -->
+            <p>Response Duration: <span id="response-duration">Waiting for data...</span></p> 
         </section>
 
         <section>
@@ -66,7 +66,7 @@
                     document.getElementById('emotion-response').innerText = data.Emotion_Response || "No data";
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
-                    document.getElementById('response-duration').textContent = data.Response_Duration || "No data"; 
+                    document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
                 })
                 .catch(error => {
                     console.error('Error fetching data: ', error);
