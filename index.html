@@ -94,12 +94,14 @@
     <script>
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
-            fetch('https://hci.dannyduyufei.workers.dev/') // Use the correct URL endpoint for fetching data
+            fetch('https://hci.dannyduyufei.workers.dev/',{
+                cache: 'no-store', // This should prevent browser caching of responses
+            }) // Use the correct URL endpoint for fetching data
                 .then(response => {
                     if (response.ok) {
                         return response.json();
                     } else {
-                        throw new Error('Network response was not ok.');
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
                 })
                 .then(data => {
