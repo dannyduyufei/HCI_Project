@@ -5,14 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCI ROS Info Site</title>
-    <!-- Add a link to your stylesheet here if you have one -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #444;
+            padding: 5px;
+        }
+        nav a {
+            color: white;
+            padding: 0 15px;
+            text-decoration: none;
+        }
+        main {
+            margin: 20px;
+        }
+        section {
+            background-color: #fff;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to My ROS Showcase</h1>
+        <h1>Welcome to Capstone Group 8 ROS Showcase</h1>
     </header>
 
     <nav>
+        <a href="#ros-data-section">ROS Data</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
         <!-- Navigation links can go here -->
     </nav>
 
@@ -30,19 +76,19 @@
             <p>Response Duration: <span id="response-duration">Waiting for data...</span></p> 
         </section>
 
-        <section>
+        <section id="about">
             <h2>About the Project</h2>
             <p>This section can contain information about your ROS projects, your objectives, and any other relevant details that visitors should know about.</p>
         </section>
 
-        <section>
+        <section id="contact">
             <h2>Contact Information</h2>
             <p>If you wish to be contacted, provide your contact information here.</p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 by Your Name. All rights reserved.</p>
+        <p>&copy; 2024 by Capstone Group 8. All rights reserved.</p>
     </footer>
 
     <script>
