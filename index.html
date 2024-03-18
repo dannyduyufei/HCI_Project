@@ -168,10 +168,21 @@ index.html:
         }
 
         function displayPlaylist(playlistData) {
+            console.log('Playlist data received:', playlistData); // Debugging line
+            
             const playlistItemsContainer = document.getElementById('playlist-items');
             playlistItemsContainer.innerHTML = ''; // Clear existing items
-        
-            const playlistItems = playlistData.Playlist.split(',,').filter(item => item); // Split into array and filter out empty strings
+
+            // Ensure we are receiving data in the expected format.
+              if (!playlistData || !playlistData.Playlist) {
+                console.error('Invalid playlist data:', playlistData);
+                displayMessage('Invalid playlist data received from the server.', 'error');
+                return;
+              }
+            
+            const playlistItems = playlistData.Playlist.split(',,').filter(item => item.trim() !== ''); // Split into array and filter out empty strings
+            console.log('Parsed playlist items:', playlistItems); // Debugging line
+            
             playlistItems.forEach(item => {
               const [title, statusString] = item.split('-');
               const status = statusString === 'True';
