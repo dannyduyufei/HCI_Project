@@ -51,6 +51,16 @@
             bottom: 0;
             width: 100%;
         }
+        .playlist-items {
+          display: flex;
+          flex-direction: column;
+        }
+    
+        .playlist-item {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px; /* space between items */
+        }
     </style>
 </head>
 <body>
@@ -189,22 +199,26 @@
             playlistItems.forEach(item => {
               const [title, statusString] = item.split('-');
               const status = statusString === 'True';
-              
+            
               const itemElement = document.createElement('div');
+              itemElement.className = 'playlist-item';
+            
               const titleSpan = document.createElement('span');
               titleSpan.textContent = title;
+              itemElement.appendChild(titleSpan);
+            
               const statusButton = document.createElement('button');
               statusButton.textContent = status ? 'Selected' : 'Not Selected';
-              statusButton.style.backgroundColor = status ? 'green' : 'red';
+              statusButton.className = status ? 'selected-button' : 'not-selected-button';
               statusButton.onclick = () => toggleStatus(title, !status);
-        
+              itemElement.appendChild(statusButton);
+            
               const deleteButton = document.createElement('button');
               deleteButton.textContent = 'Delete';
+              deleteButton.className = 'delete-button';
               deleteButton.onclick = () => deleteItem(title);
-        
-              itemElement.appendChild(titleSpan);
-              itemElement.appendChild(statusButton);
               itemElement.appendChild(deleteButton);
+            
               playlistItemsContainer.appendChild(itemElement);
             });
         }
