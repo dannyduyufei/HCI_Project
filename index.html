@@ -152,7 +152,7 @@ index.html:
         function fetchPlaylist() {
             // Fetch the current playlist data
             // The fetch url and method should be adapted to your backend
-            fetch('https://your-cloudflare-worker-url/playlist')
+            fetch('https://hci.dannyduyufei.workers.dev/playlist')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok.');
@@ -214,7 +214,7 @@ index.html:
 
         function addToPlaylist(title, content) {
             // Send the data to the server to add to the playlist
-            fetch('https://your-cloudflare-worker-url/playlist', {
+            fetch('https://hci.dannyduyufei.workers.dev/playlist', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
