@@ -202,8 +202,12 @@
                         fetch('https://hci.dannyduyufei.workers.dev/playlist')
                         .then(response => response.json())
                         .then(data => {
-                            const playlist = data; // Assuming the response is the playlist data array
-                            updatePlaylistDisplay(playlist);
+                            if (data && data.Playlist) {
+                                const playlist = data.Playlist; // Should be an array now
+                                updatePlaylistDisplay(playlist);
+                            } else {
+                                throw new Error('Playlist not found');
+                            }
                         })
                         .catch(error => {
                             console.error('Error:', error);
