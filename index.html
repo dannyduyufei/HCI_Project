@@ -87,6 +87,18 @@
             <h2>Contact Information</h2>
             <p>If you wish to be contacted, provide your contact information here.</p>
         </section>
+
+        <section id="playlist-section">
+            <h2>Playlist Control</h2>
+            <input type="text" id="line-title" placeholder="Type your line title here" onclick="this.placeholder = ''" />
+            <input type="text" id="line-content" placeholder="Type your line content here" onclick="this.placeholder = ''" />
+            <button id="confirm-button">Confirm</button>
+            <div id="message"></div>
+            
+            <div id="playlist-items">
+                // <!-- Playlist items will be generated dynamically here -->
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -116,7 +128,75 @@
                     document.getElementById('emotion-response').innerText = data.Emotion_Response || "No data";
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
-                    document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
+                    document.getElementById('response-duration').innerText = data.Response_Duration || "No data";
+                    document.getElementById('confirm-button').addEventListener('click', function() {
+                        const title = document.getElementById('line-title').value.trim();
+                        const content = document.getElementById('line-content').value.trim();
+                        const messageElement = document.getElementById('message');
+                
+                        if (!title || !content) {
+                            messageElement.textContent = 'Please fill in both title and content.';
+                            return;
+                        }
+                
+                        // Send the data to Cloudflare Worker to update the KV namespace
+                        // Placeholder: You will need to implement the function to actually send data
+                        addPlaylistItem(title, content);
+                    });
+                    
+                    function addPlaylistItem(title, content) {
+                        // This function should send the data to your Cloudflare Worker
+                        // Placeholder: Implement AJAX call to update the KV namespace
+                        console.log('Adding playlist item:', title, content);
+                        // On success:
+                        messageElement.textContent = 'Playlist updated successfully.';
+                        // Clear input fields
+                        document.getElementById('line-title').value = '';
+                        document.getElementById('line-content').value = '';
+                        // Refresh the playlist display
+                        fetchPlaylistItems();
+                    }
+                
+                    function fetchPlaylistItems() {
+                        // This function should fetch the current playlist items from the Cloudflare Worker
+                        // Placeholder: Implement AJAX call to retrieve playlist items
+                        console.log('Fetching playlist items');
+                        // Then update the DOM with the playlist items
+                        // Each item should have a button to toggle the play status and a delete button
+                        const playlistElement = document.getElementById('playlist-items');
+                        playlistElement.innerHTML = ''; // Clear existing items
+                        
+                        // Example of adding items to the playlist
+                        const playlist = ["Ask1","True","Clean1","True","Clean2","False"]; // Placeholder data
+                        playlist.forEach((item, index) => {
+                            if (index % 2 === 0) { // Assuming even indices are titles and odd indices are status
+                                const playStatus = playlist[index + 1] === "True" ? "green" : "red";
+                                const itemElement = `
+                                    <div>
+                                        <span>${item}</span>
+                                        <button style="background-color: ${playStatus};" onclick="togglePlayStatus('${item}')"></button>
+                                        <button onclick="deletePlaylistItem('${item}')">Delete</button>
+                                    </div>
+                                `;
+                                playlistElement.insertAdjacentHTML('beforeend', itemElement);
+                            }
+                        });
+                    }
+                
+                    function togglePlayStatus(title) {
+                        // This function should toggle the play status of the playlist item
+                        // Placeholder: Implement AJAX call to update the play status
+                        console.log('Toggling play status for:', title);
+                    }
+                
+                    function deletePlaylistItem(title) {
+                        // This function should delete the playlist item
+                        // Placeholder: Implement AJAX call to delete the item
+                        console.log('Deleting playlist item:', title);
+                    }
+                
+                    // Call fetchPlaylistItems to populate the playlist on load
+                    fetchPlaylistItems();
                 })
                 .catch(error => {
                     console.error('Error fetching data: ', error);
