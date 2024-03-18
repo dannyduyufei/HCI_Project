@@ -183,7 +183,7 @@ index.html:
                 return;
               }
             
-            const playlistItems = playlistData.Playlist.split(',,').filter(item => item.trim() !== ''); // Split into array and filter out empty strings
+            const playlistItems = playlistData.Playlist.split(',,');
             console.log('Parsed playlist items:', playlistItems); // Debugging line
             
             playlistItems.forEach(item => {
