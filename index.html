@@ -210,12 +210,36 @@
         }
 
         function toggleStatus(title, newStatus) {
-            // Implement logic to send a PUT request to update the status of the playlist item
-            const statusString = newStatus ? 'True' : 'False';
-            console.log('Toggling status:', title, newStatus);
-            // Simulate successful status toggle
-            setTimeout(() => fetchPlaylist(), 500);
-          }
+          const statusString = newStatus ? 'True' : 'False';
+          console.log(`Toggling status for ${title} to ${statusString}`);
+          
+          fetch('https://hci.dannyduyufei.workers.dev/playlist', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, newStatus: statusString })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              displayMessage(`${title} status toggled to ${statusString}.`, 'success');
+              fetchPlaylist(); // Refresh the playlist to reflect the change
+            } else {
+              displayMessage(`Failed to toggle status for ${title}.`, 'error');
+            }
+          })
+          .catch(error => {
+            console.error('Error during status toggle:', error);
+            displayMessage('An error occurred while toggling the status.', 'error');
+          });
+        }
+
         
           function deleteItem(title) {
             fetch('https://hci.dannyduyufei.workers.dev/playlist', {
