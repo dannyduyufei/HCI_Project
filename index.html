@@ -150,6 +150,7 @@ index.html:
         });
 
         function fetchPlaylist() {
+            console.log("Fetching playlist data...");
             // Fetch the current playlist data
             // The fetch url and method should be adapted to your backend
             fetch('https://hci.dannyduyufei.workers.dev/playlist')
@@ -160,6 +161,7 @@ index.html:
                 return response.json();
             })
             .then(data => {
+                console.log("Received playlist data:", data); // Check the data structure here
                 displayPlaylist(data);
             })
             .catch(error => {
