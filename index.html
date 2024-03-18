@@ -176,7 +176,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ playlist: playlistString })
+                            body: JSON.stringify({ playlist: ['Ask1', 'True', 'Clean1', 'True', 'Clean2', 'False'] })
                         })
                         .then(response => {
                             if (!response.ok) {
