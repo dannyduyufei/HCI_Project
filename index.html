@@ -1,4 +1,4 @@
-index.html:
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -255,7 +255,8 @@ index.html:
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ title, content })
+              // When sending the data, ignore the actual content and use 'False' as the default status
+                body: JSON.stringify({ title, content: 'False' }) // This sends the default status as 'False'
             })
             .then(response => {
               if (!response.ok) {
