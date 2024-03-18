@@ -1,3 +1,4 @@
+index.html:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,27 +51,6 @@
             bottom: 0;
             width: 100%;
         }
-        #playlist-items div {
-            margin-bottom: 10px;
-        }
-        #playlist-items span {
-            margin-right: 10px;
-        }
-        #playlist-items button {
-            margin-right: 10px;
-        }
-        .play-status {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        .play-status.active {
-            background-color: green;
-        }
-        .play-status.inactive {
-            background-color: red;
-        }
     </style>
 </head>
 <body>
@@ -99,18 +79,6 @@
             <p>Response Duration: <span id="response-duration">Waiting for data...</span></p> 
         </section>
 
-        <section id="playlist-section">
-            <h2>Playlist Control</h2>
-            <input type="text" id="line-title" placeholder="Type your line title here" onclick="this.placeholder = ''" />
-            <input type="text" id="line-content" placeholder="Type your line content here" onclick="this.placeholder = ''" />
-            <button id="confirm-button">Confirm</button>
-            <div id="message"></div>
-            
-            <div id="playlist-items">
-                // <!-- Playlist items will be generated dynamically here -->
-            </div>
-        </section>
-
         <section id="about">
             <h2>About the Project</h2>
             <p>This section can contain information about your ROS projects, your objectives, and any other relevant details that visitors should know about.</p>
@@ -120,8 +88,6 @@
             <h2>Contact Information</h2>
             <p>If you wish to be contacted, provide your contact information here.</p>
         </section>
-
-        
     </main>
 
     <footer>
@@ -141,7 +107,7 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                 })
-                .then(data => {  // datastart
+                .then(data => {
                     // Update each field with the corresponding data
                     document.getElementById('detected-people').innerText = data.Detected_Human || "No data";
                     document.getElementById('image-status').innerText = data.Image_Status || "No data";
@@ -151,153 +117,8 @@
                     document.getElementById('emotion-response').innerText = data.Emotion_Response || "No data";
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
-                    document.getElementById('response-duration').innerText = data.Response_Duration || "No data";
-                    document.getElementById('confirm-button').addEventListener('click', function() {
-                        const title = document.getElementById('line-title').value.trim();
-                        const content = document.getElementById('line-content').value.trim();
-                        const messageElement = document.getElementById('message');
-                
-                        if (!title || !content) {
-                            messageElement.textContent = 'Please fill in both title and content.';
-                            return;
-                        }
-                
-                        // Send the data to Cloudflare Worker to update the KV namespace
-                        addPlaylistItem(title, content);
-                    });
-                    
-                    function addPlaylistItem(title, status) {
-                        // Corrected to add both title and status to the playlist data
-                        const newPlaylistData = [...extractPlaylistData(), title, status];
-                        const playlistString = JSON.stringify(newPlaylistData); // Convert array to JSON string
-            
-                        fetch('https://hci.dannyduyufei.workers.dev/playlist/update', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ playlist: newPlaylistData })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok.');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            document.getElementById('message').textContent = 'Playlist updated successfully.';
-                            document.getElementById('line-title').value = '';
-                            document.getElementById('line-content').value = '';
-                            fetchPlaylistItems();
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            document.getElementById('message').textContent = 'An error occurred while updating the playlist.';
-                        });
-                    }
-                    
-                
-                    function fetchPlaylistItems() {
-                        // This function should fetch the current playlist items from the Cloudflare Worker
-                        fetch('https://hci.dannyduyufei.workers.dev/playlist')
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data && data.Playlist) {
-                                const playlist = data.Playlist; // Should be an array now
-                                updatePlaylistDisplay(playlist);
-                            } else {
-                                throw new Error('Playlist not found');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                    }
-
-                    function updatePlaylistDisplay(playlist) {
-                        const playlistElement = document.getElementById('playlist-items');
-                        playlistElement.innerHTML = ''; // Clear existing items
-                
-                        playlist.forEach((item, index) => {
-                            if (index % 2 === 0) { // Assuming even indices are titles and odd indices are status
-                                const playStatus = playlist[index + 1] === "True" ? "active" : "inactive";
-                                const itemElement = `
-                                    <div>
-                                        <span>${item}</span>
-                                        <div class="play-status ${playStatus}" onclick="togglePlayStatus('${item}', '${playlist[index + 1]}')"></div>
-                                        <button onclick="deletePlaylistItem('${item}')">Delete</button>
-                                    </div>
-                                `;
-                                playlistElement.insertAdjacentHTML('beforeend', itemElement);
-                            }
-                        });
-                    }
-                
-                    function togglePlayStatus(title, currentStatus) {
-                        const newStatus = currentStatus === "True" ? "False" : "True";
-                        const playlistData = extractPlaylistData();
-                        const titleIndex = playlistData.indexOf(title);
-                        if (titleIndex !== -1) {
-                            playlistData[titleIndex + 1] = newStatus; // Toggle the status
-                            const playlistString = `["${playlistData.join('","')}"]`;
-                
-                            fetch('https://your-cloudflare-worker-url/playlist/update', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ playlist: playlistString })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                fetchPlaylistItems(); // Refresh the playlist
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                        }
-                    }
-                
-                    function deletePlaylistItem(title) {
-                        const playlistData = extractPlaylistData();
-                        const titleIndex = playlistData.indexOf(title);
-                        if (titleIndex !== -1) {
-                            playlistData.splice(titleIndex, 2); // Remove the title and its status
-                            const playlistString = `["${playlistData.join('","')}"]`;
-                
-                            fetch('https://your-cloudflare-worker-url/playlist/update', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ playlist: playlistString })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                fetchPlaylistItems(); // Refresh the playlist
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                        }
-                    }
-
-                    function extractPlaylistData() {
-                        const playlistElements = document.querySelectorAll('#playlist-items div');
-                        let playlistData = [];
-                        playlistElements.forEach((element) => {
-                            const title = element.querySelector('span').textContent;
-                            const status = element.querySelector('.play-status').classList.contains('active') ? "True" : "False";
-                            playlistData.push(title, status);
-                        });
-                        return playlistData;
-                    }
-            
-                
-                    // Call fetchPlaylistItems to populate the playlist on load
-                    fetchPlaylistItems();
-                }  // data end
-                    )
+                    document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
+                })
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
