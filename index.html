@@ -139,7 +139,7 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                 })
-                .then(data => {
+                .then(data => {  // datastart
                     // Update each field with the corresponding data
                     document.getElementById('detected-people').innerText = data.Detected_Human || "No data";
                     document.getElementById('image-status').innerText = data.Image_Status || "No data";
@@ -164,10 +164,10 @@
                         addPlaylistItem(title, content);
                     });
                     
-                    function addPlaylistItem(title, content) {
-                        const playlistElement = document.getElementById('playlist-items');
-                        const newPlaylistData = [...extractPlaylistData(), title, status].join('","');
-                        const playlistString = `["${newPlaylistData}"]`; // Wrap in array brackets and quote
+                    function addPlaylistItem(title, status) {
+                        // Corrected to add both title and status to the playlist data
+                        const newPlaylistData = [...extractPlaylistData(), title, status];
+                        const playlistString = JSON.stringify(newPlaylistData); // Convert array to JSON string
             
                         fetch('https://hci.dannyduyufei.workers.dev/playlist/update', {
                             method: 'POST',
@@ -176,7 +176,12 @@
                             },
                             body: JSON.stringify({ playlist: playlistString })
                         })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok.');
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             document.getElementById('message').textContent = 'Playlist updated successfully.';
                             document.getElementById('line-title').value = '';
@@ -187,8 +192,8 @@
                             console.error('Error:', error);
                             document.getElementById('message').textContent = 'An error occurred while updating the playlist.';
                         });
-                        }
                     }
+                    
                 
                     function fetchPlaylistItems() {
                         // This function should fetch the current playlist items from the Cloudflare Worker
@@ -285,7 +290,8 @@
                 
                     // Call fetchPlaylistItems to populate the playlist on load
                     fetchPlaylistItems();
-                })
+                }  // data end
+                    )
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
