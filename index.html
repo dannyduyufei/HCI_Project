@@ -58,9 +58,41 @@
     
         .playlist-item {
           display: flex;
-          justify-content: space-between;
+          justify-content: start;
+          align-items: center; /* Center items vertically */
           margin-bottom: 5px; /* space between items */
         }
+
+        .playlist-item > span {
+          margin-right: 10px; /* Space between the title and the status button */
+        }
+        
+        /* Button styling */
+        button {
+          padding: 5px 10px; /* Add padding inside the buttons for better visual */
+          margin-left: 5px; /* Reduced space between buttons */
+          cursor: pointer; /* Change cursor to pointer when hovering over the buttons */
+        }
+        
+        .selected-button, .not-selected-button {
+          /* Common styles for both buttons */
+          color: white;
+          border: none; /* Remove the default border */
+        }
+        
+        .selected-button {
+          background-color: green;
+        }
+        
+        .not-selected-button {
+          background-color: red;
+        }
+        
+        .delete-button {
+          background-color: gray;
+          color: white;
+        }
+        
     </style>
 </head>
 <body>
