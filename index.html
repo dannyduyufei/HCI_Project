@@ -218,10 +218,32 @@ index.html:
           }
         
           function deleteItem(title) {
-            // Implement logic to send a DELETE request to delete the playlist item
-            console.log('Deleting item:', title);
-            // Simulate successful delete
-            setTimeout(() => fetchPlaylist(), 500);
+            fetch('https://hci.dannyduyufei.workers.dev/playlist', {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title })
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok.');
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (data.success) {
+                  console.log(`Item deleted: ${title}`);
+                  fetchPlaylist(); // Refresh the playlist
+                } else {
+                  console.error('Failed to delete item:', title);
+                  displayMessage(`Failed to delete item: ${title}`, 'error');
+                }
+              })
+              .catch(error => {
+                console.error('Error during deletion:', error);
+                displayMessage('An error occurred while deleting the item.', 'error');
+              });
           }
 
         
