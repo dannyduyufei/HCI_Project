@@ -58,34 +58,29 @@
     
         .playlist-item {
           display: flex;
-          justify-content: start;
-          align-items: center; /* Center items vertically */
-          margin-bottom: 5px; /* space between items */
-        }
-
-        .playlist-item > span {
-          margin-right: 20px; /* Space between the title and the status button */
+          align-items: center;
+          margin-bottom: 5px;
         }
         
-        /* Button styling */
-        button {
-          padding: 5px 10px; /* Add padding inside the buttons for better visual */
-          margin-left: 5px; /* Reduced space between buttons */
-          cursor: pointer; /* Change cursor to pointer when hovering over the buttons */
+        .playlist-item-name {
+          flex-grow: 1; /* Allows the title to fill the space */
         }
         
-        .selected-button, .not-selected-button {
-          /* Common styles for both buttons */
-          color: white;
-          border: none; /* Remove the default border */
+        .playlist-item button {
+          margin-left: 10px;
+          padding: 5px 15px; /* Adjust padding as needed */
+          width: 90px; /* Fixed width for buttons */
+          text-align: center; /* Center the text inside buttons */
         }
         
         .selected-button {
           background-color: green;
+          color: white;
         }
         
         .not-selected-button {
           background-color: red;
+          color: white;
         }
         
         .delete-button {
@@ -236,6 +231,7 @@
               itemElement.className = 'playlist-item';
             
               const titleSpan = document.createElement('span');
+              titleSpan.className = 'playlist-item-name';  
               titleSpan.textContent = title;
               itemElement.appendChild(titleSpan);
             
