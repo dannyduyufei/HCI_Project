@@ -58,12 +58,15 @@
     
         .playlist-item {
           display: flex;
+          justify-content: space-between; /* This will spread the children elements evenly */
           align-items: center;
           margin-bottom: 5px;
         }
         
         .playlist-item-name {
-          flex-grow: 1; /* Allows the title to fill the space */
+          /* If you want to limit the width of the name, you can uncomment the next line */
+          /* max-width: 60%; */ 
+          margin-right: 20px; /* Adjust this value to bring the name closer to the buttons */
         }
         
         .playlist-item button {
