@@ -50,6 +50,27 @@
             bottom: 0;
             width: 100%;
         }
+        #playlist-items div {
+            margin-bottom: 10px;
+        }
+        #playlist-items span {
+            margin-right: 10px;
+        }
+        #playlist-items button {
+            margin-right: 10px;
+        }
+        .play-status {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .play-status.active {
+            background-color: green;
+        }
+        .play-status.inactive {
+            background-color: red;
+        }
     </style>
 </head>
 <body>
@@ -140,41 +161,59 @@
                         }
                 
                         // Send the data to Cloudflare Worker to update the KV namespace
-                        // Placeholder: You will need to implement the function to actually send data
                         addPlaylistItem(title, content);
                     });
                     
                     function addPlaylistItem(title, content) {
-                        // This function should send the data to your Cloudflare Worker
-                        // Placeholder: Implement AJAX call to update the KV namespace
-                        console.log('Adding playlist item:', title, content);
-                        // On success:
-                        messageElement.textContent = 'Playlist updated successfully.';
-                        // Clear input fields
-                        document.getElementById('line-title').value = '';
-                        document.getElementById('line-content').value = '';
-                        // Refresh the playlist display
-                        fetchPlaylistItems();
+                        const playlistElement = document.getElementById('playlist-items');
+                        const newPlaylistData = [...extractPlaylistData(), title, status].join('","');
+                        const playlistString = `["${newPlaylistData}"]`; // Wrap in array brackets and quote
+            
+                        fetch('https://hci.dannyduyufei.workers.dev/playlist/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ playlist: playlistString })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('message').textContent = 'Playlist updated successfully.';
+                            document.getElementById('line-title').value = '';
+                            document.getElementById('line-content').value = '';
+                            fetchPlaylistItems();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            document.getElementById('message').textContent = 'An error occurred while updating the playlist.';
+                        });
+                        }
                     }
                 
                     function fetchPlaylistItems() {
                         // This function should fetch the current playlist items from the Cloudflare Worker
-                        // Placeholder: Implement AJAX call to retrieve playlist items
-                        console.log('Fetching playlist items');
-                        // Then update the DOM with the playlist items
-                        // Each item should have a button to toggle the play status and a delete button
+                        fetch('https://hci.dannyduyufei.workers.dev/playlist')
+                        .then(response => response.json())
+                        .then(data => {
+                            const playlist = data; // Assuming the response is the playlist data array
+                            updatePlaylistDisplay(playlist);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+
+                    function updatePlaylistDisplay(playlist) {
                         const playlistElement = document.getElementById('playlist-items');
                         playlistElement.innerHTML = ''; // Clear existing items
-                        
-                        // Example of adding items to the playlist
-                        const playlist = ["Ask1","True","Clean1","True","Clean2","False"]; // Placeholder data
+                
                         playlist.forEach((item, index) => {
                             if (index % 2 === 0) { // Assuming even indices are titles and odd indices are status
-                                const playStatus = playlist[index + 1] === "True" ? "green" : "red";
+                                const playStatus = playlist[index + 1] === "True" ? "active" : "inactive";
                                 const itemElement = `
                                     <div>
                                         <span>${item}</span>
-                                        <button style="background-color: ${playStatus};" onclick="togglePlayStatus('${item}')"></button>
+                                        <div class="play-status ${playStatus}" onclick="togglePlayStatus('${item}', '${playlist[index + 1]}')"></div>
                                         <button onclick="deletePlaylistItem('${item}')">Delete</button>
                                     </div>
                                 `;
@@ -183,17 +222,66 @@
                         });
                     }
                 
-                    function togglePlayStatus(title) {
-                        // This function should toggle the play status of the playlist item
-                        // Placeholder: Implement AJAX call to update the play status
-                        console.log('Toggling play status for:', title);
+                    function togglePlayStatus(title, currentStatus) {
+                        const newStatus = currentStatus === "True" ? "False" : "True";
+                        const playlistData = extractPlaylistData();
+                        const titleIndex = playlistData.indexOf(title);
+                        if (titleIndex !== -1) {
+                            playlistData[titleIndex + 1] = newStatus; // Toggle the status
+                            const playlistString = `["${playlistData.join('","')}"]`;
+                
+                            fetch('https://your-cloudflare-worker-url/playlist/update', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ playlist: playlistString })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                fetchPlaylistItems(); // Refresh the playlist
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                        }
                     }
                 
                     function deletePlaylistItem(title) {
-                        // This function should delete the playlist item
-                        // Placeholder: Implement AJAX call to delete the item
-                        console.log('Deleting playlist item:', title);
+                        const playlistData = extractPlaylistData();
+                        const titleIndex = playlistData.indexOf(title);
+                        if (titleIndex !== -1) {
+                            playlistData.splice(titleIndex, 2); // Remove the title and its status
+                            const playlistString = `["${playlistData.join('","')}"]`;
+                
+                            fetch('https://your-cloudflare-worker-url/playlist/update', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ playlist: playlistString })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                fetchPlaylistItems(); // Refresh the playlist
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                        }
                     }
+
+                    function extractPlaylistData() {
+                        const playlistElements = document.querySelectorAll('#playlist-items div');
+                        let playlistData = [];
+                        playlistElements.forEach((element) => {
+                            const title = element.querySelector('span').textContent;
+                            const status = element.querySelector('.play-status').classList.contains('active') ? "True" : "False";
+                            playlistData.push(title, status);
+                        });
+                        return playlistData;
+                    }
+            
                 
                     // Call fetchPlaylistItems to populate the playlist on load
                     fetchPlaylistItems();
