@@ -168,18 +168,82 @@ index.html:
         }
 
         function displayPlaylist(playlistData) {
-            // Function to parse playlist data and update the DOM
-            // This function needs to parse the string format 'line-true,,line-false'
-            // and create interactive elements for each line
+            const playlistItemsContainer = document.getElementById('playlist-items');
+            playlistItemsContainer.innerHTML = ''; // Clear existing items
+        
+            const playlistItems = playlistData.Playlist.split(',,').filter(item => item); // Split into array and filter out empty strings
+            playlistItems.forEach(item => {
+              const [title, statusString] = item.split('-');
+              const status = statusString === 'True';
+              
+              const itemElement = document.createElement('div');
+              const titleSpan = document.createElement('span');
+              titleSpan.textContent = title;
+              const statusButton = document.createElement('button');
+              statusButton.textContent = status ? 'Selected' : 'Not Selected';
+              statusButton.style.backgroundColor = status ? 'green' : 'red';
+              statusButton.onclick = () => toggleStatus(title, !status);
+        
+              const deleteButton = document.createElement('button');
+              deleteButton.textContent = 'Delete';
+              deleteButton.onclick = () => deleteItem(title);
+        
+              itemElement.appendChild(titleSpan);
+              itemElement.appendChild(statusButton);
+              itemElement.appendChild(deleteButton);
+              playlistItemsContainer.appendChild(itemElement);
+            });
         }
 
+        function toggleStatus(title, newStatus) {
+            // Implement logic to send a PUT request to update the status of the playlist item
+            const statusString = newStatus ? 'True' : 'False';
+            console.log('Toggling status:', title, newStatus);
+            // Simulate successful status toggle
+            setTimeout(() => fetchPlaylist(), 500);
+          }
+        
+          function deleteItem(title) {
+            // Implement logic to send a DELETE request to delete the playlist item
+            console.log('Deleting item:', title);
+            // Simulate successful delete
+            setTimeout(() => fetchPlaylist(), 500);
+          }
+
+        
+
         function addToPlaylist(title, content) {
-            // Placeholder function to send a new item to the playlist
-            // Implement actual POST request logic here
-            console.log('Adding to playlist:', title, content);
-            // Simulate successful update
-            setTimeout(() => displayMessage('Item added to playlist.', 'success'), 500);
-        }
+            // Send the data to the server to add to the playlist
+            fetch('https://your-cloudflare-worker-url/playlist', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ title, content })
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok.');
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.success) {
+                displayMessage('Item added to playlist.', 'success');
+                // Clear input fields
+                document.getElementById('line-title').value = '';
+                document.getElementById('line-content').value = '';
+                // Fetch updated playlist
+                fetchPlaylist();
+              } else {
+                displayMessage('Failed to add item to playlist.', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              displayMessage('An error occurred while adding to playlist.', 'error');
+            });
+          }
 
         function displayMessage(message, type) {
             const messageElement = document.getElementById('playlist-message');
