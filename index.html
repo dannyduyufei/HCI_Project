@@ -79,6 +79,17 @@ index.html:
             <p>Response Duration: <span id="response-duration">Waiting for data...</span></p> 
         </section>
 
+        <section id="playlist-section">
+            <h2>Playlist</h2>
+            <input type="text" id="line-title" placeholder="Type your line title here (disappear after user click here)" />
+            <input type="text" id="line-content" placeholder="Type your line content here (disappear after user click here)" />
+            <button id="confirm-button">Confirm</button>
+            <div id="playlist-message"></div>
+            
+            <!-- Placeholder for playlist items -->
+            <div id="playlist-items"></div>
+        </section>
+
         <section id="about">
             <h2>About the Project</h2>
             <p>This section can contain information about your ROS projects, your objectives, and any other relevant details that visitors should know about.</p>
@@ -122,6 +133,58 @@ index.html:
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
+        }
+
+        document.getElementById('confirm-button').addEventListener('click', function() {
+            const title = document.getElementById('line-title').value.trim();
+            const content = document.getElementById('line-content').value.trim();
+
+            if (!title || !content) {
+                displayMessage('Please fill in both title and content.', 'error');
+                return;
+            }
+
+            // Send the data to the server to add to the playlist
+            // Functionality to be implemented on the backend
+            addToPlaylist(title, content);
+        });
+
+        function fetchPlaylist() {
+            // Fetch the current playlist data
+            // The fetch url and method should be adapted to your backend
+            fetch('https://your-cloudflare-worker-url/playlist')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayPlaylist(data);
+            })
+            .catch(error => {
+                console.error('Error fetching playlist:', error);
+            });
+        }
+
+        function displayPlaylist(playlistData) {
+            // Function to parse playlist data and update the DOM
+            // This function needs to parse the string format 'line-true,,line-false'
+            // and create interactive elements for each line
+        }
+
+        function addToPlaylist(title, content) {
+            // Placeholder function to send a new item to the playlist
+            // Implement actual POST request logic here
+            console.log('Adding to playlist:', title, content);
+            // Simulate successful update
+            setTimeout(() => displayMessage('Item added to playlist.', 'success'), 500);
+        }
+
+        function displayMessage(message, type) {
+            const messageElement = document.getElementById('playlist-message');
+            messageElement.textContent = message;
+            messageElement.style.color = type === 'error' ? 'red' : 'green';
         }
 
         window.onload = function() {
