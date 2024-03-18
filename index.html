@@ -155,6 +155,7 @@ index.html:
             // The fetch url and method should be adapted to your backend
             fetch('https://hci.dannyduyufei.workers.dev/playlist')
             .then(response => {
+                console.log("Playlist response:", response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok.');
                 }
@@ -265,9 +266,11 @@ index.html:
         }
 
         window.onload = function() {
+            console.log("Page is loading...");
             fetchROSData();
             // Refresh the data every second
             setInterval(fetchROSData, 1000);
+            fetchPlaylist(); // This should also be called here
         };
     </script>
 </body>
