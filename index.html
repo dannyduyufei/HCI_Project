@@ -320,6 +320,9 @@
 
         
         function addToPlaylist(title, content) {
+
+            console.log('Prcessing add to play.. '); // Debugging line
+            
               // First, add the new playlist item
               fetch('https://hci.dannyduyufei.workers.dev/playlist', {
                 method: 'POST',
