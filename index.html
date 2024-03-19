@@ -320,60 +320,60 @@
 
         
         function addToPlaylist(title, content) {
-
-            console.log('Prcessing add to play.. '); // Debugging line
-            
-              // First, add the new playlist item
-              fetch('https://hci.dannyduyufei.workers.dev/playlist', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, content })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Failed to add item to playlist: Network response was not ok.');
-                }
-                return response.json();
-              })
-              .then(data => {
-                if (!data.success) {
-                  throw new Error('Failed to add item to playlist: Server returned an error.');
-                }
-                // Playlist item added successfully, now update NewContent
-                return fetch('https://hci.dannyduyufei.workers.dev/NewContent', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ NewContent: content })
-                });
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Failed to update NewContent: Network response was not ok.');
-                }
-                return response.json();
-              })
-              .then(data => {
-                if (!data.success) {
-                  throw new Error('Failed to update NewContent: Server returned an error.');
-                }
-                displayMessage('Item added to playlist and NewContent updated successfully.', 'success');
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                displayMessage(error.message, 'error');
-              })
-              .finally(() => {
-                // Clear input fields regardless of operation outcome
-                document.getElementById('line-title').value = '';
-                document.getElementById('line-content').value = '';
-                // Optionally, fetch updated playlist
-                fetchPlaylist();
-              });
+          console.log('Processing add to playlist...'); // Debugging line
+        
+          // First, add the new playlist item
+          fetch('https://hci.dannyduyufei.workers.dev/playlist', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, content })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to add item to playlist: Network response was not ok.');
             }
+            return response.json();
+          })
+          .then(data => {
+            if (!data.success) {
+              throw new Error('Failed to add item to playlist: Server returned an error.');
+            }
+            // Playlist item added successfully, now update NewContent
+            return fetch('https://hci.dannyduyufei.workers.dev/update', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ NewContent: content })
+            });
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to update NewContent: Network response was not ok.');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (!data.success) {
+              throw new Error('Failed to update NewContent: Server returned an error.');
+            }
+            displayMessage('Item added to playlist and NewContent updated successfully.', 'success');
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            displayMessage(error.message, 'error');
+          })
+          .finally(() => {
+            // Clear input fields regardless of operation outcome
+            document.getElementById('line-title').value = '';
+            document.getElementById('line-content').value = '';
+            // Optionally, fetch updated playlist
+            fetchPlaylist();
+          });
+        }
+
 
 
 
