@@ -322,13 +322,17 @@
         function addToPlaylist(title, content) {
           console.log('Processing add to playlist...'); // Debugging line
         
-          // First, add the new playlist item
+          // Define the default status for new playlist items
+          const defaultStatus = 'False';
+        
+          // First, add the new playlist item with default status 'False'
           fetch('https://hci.dannyduyufei.workers.dev/playlist', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ title, content })
+            // Send title with default status 'False', not the content
+            body: JSON.stringify({ title, content: defaultStatus })
           })
           .then(response => {
             if (!response.ok) {
@@ -340,7 +344,7 @@
             if (!data.success) {
               throw new Error('Failed to add item to playlist: Server returned an error.');
             }
-            // Playlist item added successfully, now update NewContent
+            // Playlist item added successfully, now update NewContent with the actual content
             return fetch('https://hci.dannyduyufei.workers.dev/update', {
               method: 'PUT',
               headers: {
@@ -373,6 +377,7 @@
             fetchPlaylist();
           });
         }
+
 
 
 
