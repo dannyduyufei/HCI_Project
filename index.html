@@ -339,7 +339,7 @@
                   throw new Error('Failed to add item to playlist: Server returned an error.');
                 }
                 // Playlist item added successfully, now update NewContent
-                return fetch('https://hci.dannyduyufei.workers.dev/updateNewContent', {
+                return fetch('https://hci.dannyduyufei.workers.dev/NewContent', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
