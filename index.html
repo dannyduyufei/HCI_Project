@@ -320,39 +320,61 @@
 
         
         function addToPlaylist(title, content) {
-            // Send the data to the server to add to the playlist
-            fetch('https://hci.dannyduyufei.workers.dev/playlist', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              // When sending the data, ignore the actual content and use 'False' as the default status
-                body: JSON.stringify({ title, content: 'False' }) // This sends the default status as 'False'
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok.');
-              }
-              return response.json();
-            })
-            .then(data => {
-              if (data.success) {
-                displayMessage('Item added to playlist.', 'success');
-                // Clear input fields
+              // First, add the new playlist item
+              fetch('https://hci.dannyduyufei.workers.dev/playlist', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content })
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Failed to add item to playlist: Network response was not ok.');
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (!data.success) {
+                  throw new Error('Failed to add item to playlist: Server returned an error.');
+                }
+                // Playlist item added successfully, now update NewContent
+                return fetch('https://hci.dannyduyufei.workers.dev/updateNewContent', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ NewContent: content })
+                });
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Failed to update NewContent: Network response was not ok.');
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (!data.success) {
+                  throw new Error('Failed to update NewContent: Server returned an error.');
+                }
+                displayMessage('Item added to playlist and NewContent updated successfully.', 'success');
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                displayMessage(error.message, 'error');
+              })
+              .finally(() => {
+                // Clear input fields regardless of operation outcome
                 document.getElementById('line-title').value = '';
                 document.getElementById('line-content').value = '';
-                // Fetch updated playlist
+                // Optionally, fetch updated playlist
                 fetchPlaylist();
-              } else {
-                displayMessage('Failed to add item to playlist.', 'error');
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              displayMessage('An error occurred while adding to playlist.', 'error');
-            });
-          }
+              });
+            }
 
+
+
+        
         function displayMessage(message, type) {
             const messageElement = document.getElementById('playlist-message');
             messageElement.textContent = message;
