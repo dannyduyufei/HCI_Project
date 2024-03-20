@@ -63,9 +63,11 @@
             /* If you want to limit the width of the name, you can uncomment the next line */
             max-width: 60%;
             margin-right: auto; /* Adjust this value to bring the name closer to the buttons */
+            width: 300px;
         }
 
         .status-button-container {
+            margin-left: 30px;
             display: flex; /* Makes sure this container is also a flexbox */
             justify-content: flex-end; /* Aligns the button to the right */
             margin-right: 30px; /* This creates space between the status buttons and delete button */
@@ -87,11 +89,13 @@
         .selected-button {
             background-color: green;
             color: white;
+            flex: 0 0 120px;
         }
         
         .not-selected-button {
             background-color: red;
             color: white;
+            flex: 0 0 120px;
         }
         
         .delete-button {
