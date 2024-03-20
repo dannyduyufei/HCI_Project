@@ -319,7 +319,7 @@
         
           function deleteItem(title) {
             // Show a confirmation dialog
-            if(window.confirm("Are you sure you want to delete this item?")) {
+            if(window.confirm("Are you sure you want to delete \"" + title + "\"?")) {
                 // If the user clicked "OK", proceed with the delete request
                 fetch('https://hci.dannyduyufei.workers.dev/playlist', {
                     method: 'DELETE',
