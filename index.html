@@ -148,6 +148,23 @@
     </footer>
 
     <script>
+
+        function convertEmotionCodeToWord(code) {
+          const emotions = {
+            "H": "Happy",
+            "S": "Sad",
+            "T": "Touched",
+            "Sh": "Shy",
+            "N": "Naughty",
+            "F": "Funny",
+            "C": "Confused",
+            "A": "Angry",
+            "E": "Excited"
+          };
+        
+          return emotions[code] || code; // Return the original code if no match is found
+        }
+        
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
             fetch('https://hci.dannyduyufei.workers.dev/',{
@@ -167,7 +184,8 @@
                     document.getElementById('approval-result').innerText = data.Approval || "No data";
                     document.getElementById('caption').innerText = data.Captioning || "No data";
                     document.getElementById('ai-response').innerText = data.AI_Response || "No data";
-                    document.getElementById('emotion-response').innerText = data.Emotion_Response || "No data";
+                    const emotionCode = data.Emotion_Response || "No data";
+                    document.getElementById('emotion-response').innerText = convertEmotionCodeToWord(emotionCode);
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                     document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
