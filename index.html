@@ -71,9 +71,15 @@
         
         .playlist-item button {
           margin-left: 10px;
-          padding: 5px 25px; /* Adjust padding as needed */
-          width: 90px; /* Fixed width for buttons */
+          padding: 5px 15px; /* Adjust padding as needed */
+          min-width: 120px; /* Ensure both buttons have the same width */
+          height: 30px; /* Fixed height for buttons */
+          white-space: nowrap; /* Prevents text from wrapping to the next line */
           text-align: center; /* Center the text inside buttons */
+          border: none; /* Optional: removes the border */
+          outline: none; /* Optional: removes the outline */
+          cursor: pointer; /* Changes cursor to pointer on hover */
+          font-size: 14px;
         }
         
         .selected-button {
@@ -84,6 +90,7 @@
         .not-selected-button {
           background-color: red;
           color: white;
+          padding: 0 10 px;
         }
         
         .delete-button {
