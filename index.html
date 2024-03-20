@@ -62,12 +62,13 @@
         .playlist-item-name {
             /* If you want to limit the width of the name, you can uncomment the next line */
             max-width: 60%;
-            /*margin-right: 20px; /* Adjust this value to bring the name closer to the buttons */
+            margin-right: auto; /* Adjust this value to bring the name closer to the buttons */
         }
 
         .status-button-container {
-            margin-right: 30px; /* Adjust as needed to create space between this and the delete button */
-            flex: 1; /* This will ensure the button stretches to take up the available space */
+            display: flex; /* Makes sure this container is also a flexbox */
+            justify-content: flex-end; /* Aligns the button to the right */
+            margin-right: 30px; /* This creates space between the status buttons and delete button */
         }
         
         .playlist-item button {
@@ -91,13 +92,11 @@
         .not-selected-button {
             background-color: red;
             color: white;
-            padding: 0 10 px;
         }
         
         .delete-button {
-            flex: 0 0 auto 
             background-color: gray;
-            color: white;
+            color: black;
         }
         
     </style>
