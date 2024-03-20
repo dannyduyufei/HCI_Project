@@ -154,20 +154,24 @@
     <script>
 
         function convertEmotionCodeToWord(code) {
-          const emotions = {
-            "H": "Happy",
-            "S": "Sad",
-            "T": "Touched",
-            "Sh": "Shy",
-            "N": "Naughty",
-            "F": "Funny",
-            "C": "Confused",
-            "A": "Angry",
-            "E": "Excited"
-          };
+            const emotions = {
+                "\"H\"": "Happy",
+                "\"S\"": "Sad",
+                "\"T\"": "Touched",
+                "\"Sh\"": "Shy",
+                "\"N\"": "Naughty",
+                "\"F\"": "Funny",
+                "\"C\"": "Confused",
+                "\"A\"": "Angry",
+                "\"E\"": "Excited"
+            };
         
-          return emotions[code] || code; // Return the original code if no match is found
+            // Trim the code to remove any extra whitespace and quotes
+            var trimmedCode = code.trim().replace(/^"|"$/g, '');
+            
+            return emotions[`"${trimmedCode}"`] || trimmedCode; // Use backticks and ${} to construct the key including quotes
         }
+
         
         // Function to fetch data from the server and update the webpage
         function fetchROSData() {
