@@ -195,7 +195,7 @@
                     document.getElementById('ai-response').innerText = data.AI_Response || "No data";
                     const emotionCode = data.Emotion_Response || "No data";
                     console.log('Emotion code from server:', emotionCode); // Check the actual emotion code received
-                    console.log('Converted emotion:', convertEmotionCodeToWord(emotionCode)); // Check the conversion result
+                    console.log('Converted emotion :', convertEmotionCodeToWord(emotionCode)); // Check the conversion result
                     document.getElementById('emotion-response').innerText = convertEmotionCodeToWord(emotionCode);
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
