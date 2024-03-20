@@ -64,6 +64,11 @@
             /* max-width: 60%; */ 
             margin-right: 20px; /* Adjust this value to bring the name closer to the buttons */
         }
+
+        .status-button-container {
+            margin-right: 30px; /* Adjust as needed to create space between this and the delete button */
+            flex: 1; /* This will ensure the button stretches to take up the available space */
+        }
         
         .playlist-item button {
             flex: 0 0 auto; /* Do not grow or shrink */
@@ -73,7 +78,6 @@
             height: 30px; /* Fixed height for buttons */
             white-space: nowrap; /* Prevents text from wrapping to the next line */
             text-align: center; /* Center the text inside buttons */
-            margin-right: 30px;
             border: none; /* Optional: removes the border */
             outline: none; /* Optional: removes the outline */
             cursor: pointer; /* Changes cursor to pointer on hover */
