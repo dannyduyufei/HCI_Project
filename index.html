@@ -51,54 +51,43 @@
             bottom: 0;
             width: 100%;
         }
-        .playlist-items {
-          display: flex;
-          flex-direction: column;
-        }
     
         .playlist-item {
-          display: flex;
-          justify-content: space-between; /* This will spread the children elements evenly */
-          align-items: center;
-          margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between; /* This will spread the children elements evenly */
+            align-items: center;
+            margin-bottom: 5px;
         }
         
         .playlist-item-name {
-          /* If you want to limit the width of the name, you can uncomment the next line */
-          /* max-width: 60%; */ 
-          margin-right: 20px; /* Adjust this value to bring the name closer to the buttons */
+            /* If you want to limit the width of the name, you can uncomment the next line */
+            /* max-width: 60%; */ 
+            margin-right: 20px; /* Adjust this value to bring the name closer to the buttons */
         }
         
         .playlist-item button {
-          flex: 0 0 auto; /* Do not grow or shrink */
-          margin-left: 10px;
-          padding: 5px 10px; /* Adjust padding as needed */
-          width: 110px;
-          min-width: 120px; /* Ensure both buttons have the same width */
-          height: 30px; /* Fixed height for buttons */
-          white-space: nowrap; /* Prevents text from wrapping to the next line */
-          text-align: center; /* Center the text inside buttons */
-          margin-right: 10px;
-          border: none; /* Optional: removes the border */
-          outline: none; /* Optional: removes the outline */
-          cursor: pointer; /* Changes cursor to pointer on hover */
-          font-size: 14px;
+            flex: 0 0 auto; /* Do not grow or shrink */
+            padding: 5px 10px; /* Adjust padding as needed */
+            width: 110px; /* Adjust width so both 'Selected' and 'Not Selected' buttons have the same width */
+            text-align: center; /* Center the text inside buttons */
+            margin-right: 10px; /* To ensure buttons are aligned with each other */
         }
         
         .selected-button {
-          background-color: green;
-          color: white;
+            background-color: green;
+            color: white;
         }
         
         .not-selected-button {
-          background-color: red;
-          color: white;
-          padding: 0 10 px;
+            background-color: red;
+            color: white;
+            padding: 0 10 px;
         }
         
         .delete-button {
-          background-color: gray;
-          color: white;
+            flex: 0 0 auto 
+            background-color: gray;
+            color: white;
         }
         
     </style>
