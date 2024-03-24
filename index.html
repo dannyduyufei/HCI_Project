@@ -207,7 +207,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: JSON.stringify(newMode) })
+                body: JSON.stringify({ scenario_mode: newMode ? 'true' : 'false' })
             })
             .then(response => response.json())
             .then(data => {
@@ -217,11 +217,13 @@
                         displayScenarioMode(newMode);
                     } else {
                         // If not successful, log or alert the user
+                        displayScenarioMode(!newMode); // This will display the opposite of newMode
                         console.error('Failed to update scenario mode:', data);
                     }
             })
                 .catch(error => {
                     console.error('Error updating scenario mode:', error);
+                    displayScenarioMode(!newMode); // Revert to the original state in case of error
                 });
         }
 
