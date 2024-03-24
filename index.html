@@ -234,9 +234,23 @@
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
-            displayScenarioMode(data.scenario_mode === 'true'); // Assuming the data is returned as a string 'true' or 'false'
-            displayScenarioModeValue(data.scenario_mode_value);
-            displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
+            fetch('https://hci.dannyduyufei.workers.dev/scenario_mode')
+                .then(response => response.text())
+                .then(scenarioMode => {
+                  displayScenarioMode(scenarioMode === 'true');
+                });
+            
+              fetch('https://hci.dannyduyufei.workers.dev/scenario_mode_value')
+                .then(response => response.text())
+                .then(scenarioModeValue => {
+                  displayScenarioModeValue(scenarioModeValue);
+                });
+            
+              fetch('https://hci.dannyduyufei.workers.dev/Detail_scenario_mode_value')
+                .then(response => response.text())
+                .then(detailScenarioModeValue => {
+                  displayDetailScenarioModeValue(detailScenarioModeValue);
+                });
         }
 
         document.getElementById('confirm-button').addEventListener('click', function() {
