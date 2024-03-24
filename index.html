@@ -147,13 +147,9 @@
 
         <section id="scenario-mode-section">
             <h2>Scenario Mode Control</h2>
-            <p><strong>Current Scenario Mode:</strong> <span id="current-scenario-mode">Off</span></p>
-            <p><strong>Scenario Mode Value:</strong> <span id="current-scenario-mode-value">0</span></p>
-            <p><strong>Alignment Status (Detail Scenario Mode Value):</strong> <span id="current-alignment-status">Center</span></p>
-            
-            <button id="toggle-scenario-mode">Toggle Scenario Mode</button>
-            <input type="number" id="scenario-mode-value-input" placeholder="Enter Scenario Mode Value" />
-            <button id="set-scenario-mode-value">Set Scenario Mode Value</button>
+            <p><strong>Scenario Mode:</strong> <span id="scenario-mode-display">Off</span></p>
+            <p><strong>Scenario Mode Value:</strong> <span id="scenario-mode-value-display">Default</span></p>
+            <p><strong>Detail Scenario Mode Value:</strong> <span id="detail-scenario-mode-value-display">Default</span></p>
         </section>
 
         
@@ -164,6 +160,29 @@
     </footer>
 
     <script>
+        function displayScenarioMode(scenarioMode) {
+            document.getElementById('scenario-mode-display').textContent = scenarioMode ? 'On' : 'Off';
+        }
+
+        function displayScenarioModeValue(scenarioModeValue) {
+            const scenarioModeValueNames = {
+                '0': 'Default',
+                '1': 'Person Engaged',
+                '2': 'Person Disengaged',
+                '3': 'Auto Alignment On'
+            };
+            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValue] || 'Unknown';
+        }
+
+        function displayDetailScenarioModeValue(detailScenarioModeValue) {
+            const detailScenarioModeValueNames = {
+                '0': 'Default',
+                '1': 'Centering',
+                '2': 'Catching Up',
+                '3': 'Moving Away'
+            };
+            document.getElementById('detail-scenario-mode-value-display').textContent = detailScenarioModeValueNames[detailScenarioModeValue] || 'Unknown';
+        }
 
         function convertEmotionCodeToWord(code) {
             const emotions = {
@@ -215,6 +234,9 @@
                 .catch(error => {
                     console.error('Error fetching data: ', error);
                 });
+            displayScenarioMode(data.scenario_mode === 'true'); // Assuming the data is returned as a string 'true' or 'false'
+            displayScenarioModeValue(data.scenario_mode_value);
+            displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
         }
 
         document.getElementById('confirm-button').addEventListener('click', function() {
