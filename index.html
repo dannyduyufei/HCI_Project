@@ -188,8 +188,9 @@
 
         // Function to toggle scenario mode
         document.getElementById('toggle-scenario-mode').addEventListener('click', function() {
-            const currentMode = document.getElementById('scenario-mode-display').textContent === 'On';
-              updateScenarioMode(!currentMode);
+            const currentModeText = document.getElementById('scenario-mode-display').textContent;
+            const currentMode = currentModeText === 'On';
+            updateScenarioMode(!currentMode);
         });
 
         // Function to set scenario mode value
@@ -201,25 +202,27 @@
 
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
-            const modeValue = newMode ? 'true' : 'false'; // Use true/false as string
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: modeValue  })
+                body: JSON.stringify({ scenario_mode: JSON.stringify(newMode) })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                         // After successfully updating, we fetch the detail scenario mode value again
                         // to ensure we're displaying the updated mode
-                        fetchROSData();
+                        displayScenarioMode(newMode);
                     } else {
                         // If not successful, log or alert the user
                         console.error('Failed to update scenario mode:', data);
                     }
-            });
+            })
+                .catch(error => {
+                    console.error('Error updating scenario mode:', error);
+                });
         }
 
         // Function to update scenario mode value on the server
