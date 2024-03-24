@@ -189,8 +189,7 @@
         // Function to toggle scenario mode
         document.getElementById('toggle-scenario-mode').addEventListener('click', function() {
             const currentMode = document.getElementById('scenario-mode-display').textContent === 'On';
-            const newMode = !currentMode;
-            updateScenarioMode(newMode);
+              updateScenarioMode(!currentMode);
         });
 
         // Function to set scenario mode value
@@ -203,13 +202,12 @@
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
 
-            const modeValue = newMode ? '1' : '0';
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: newMode ? '1' : '0' })
+                body: JSON.stringify({ scenario_mode: newMode })
             })
             .then(response => response.json())
             .then(data => {
@@ -221,7 +219,7 @@
 
         // Function to update scenario mode value on the server
         function updateScenarioModeValue(newModeValue) {
-            const modeValue = String(newModeValue);
+            
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
@@ -232,7 +230,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    (newModeValue);
+                    displayScenarioModeValue(newModeValue);
                 }
             });
         }
@@ -542,7 +540,6 @@
 
         window.onload = function() {
             console.log("Page is loading...");
-            fetchROSData();
             fetchDetailScenarioModeValue();
             // Refresh the data every second
             setInterval(fetchROSData, 1000);
