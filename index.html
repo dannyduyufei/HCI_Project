@@ -147,8 +147,21 @@
 
         <section id="scenario-mode-section">
             <h2>Scenario Mode Control</h2>
+            <!-- Toggle scenario mode -->
+            <button id="toggle-scenario-mode">Toggle Scenario Mode</button>
             <p><strong>Scenario Mode:</strong> <span id="scenario-mode-display">Off</span></p>
+    
+            <!-- Set scenario mode value -->
+            <select id="scenario-mode-value-select">
+                <option value="0">Default</option>
+                <option value="1">Person Engaged</option>
+                <option value="2">Person Disengaged</option>
+                <option value="3">Auto Alignment On</option>
+            </select>
+            <button id="set-scenario-mode-value">Set Scenario Mode Value</button>
             <p><strong>Scenario Mode Value:</strong> <span id="scenario-mode-value-display">Default</span></p>
+    
+            <!-- Display detail scenario mode value -->
             <p><strong>Detail Scenario Mode Value:</strong> <span id="detail-scenario-mode-value-display">Default</span></p>
         </section>
 
@@ -163,6 +176,66 @@
         function displayScenarioMode(scenarioMode) {
             document.getElementById('scenario-mode-display').textContent = scenarioMode ? 'On' : 'Off';
         }
+
+        // Function to fetch only Detail_scenario_mode_value from the server
+        function fetchDetailScenarioModeValue() {
+            fetch('https://hci.dannyduyufei.workers.dev/Detail_scenario_mode_value')
+                .then(response => response.text())
+                .then(detailScenarioModeValue => {
+                    displayDetailScenarioModeValue(detailScenarioModeValue);
+                });
+        }
+
+        // Function to toggle scenario mode
+        document.getElementById('toggle-scenario-mode').addEventListener('click', function() {
+            const currentMode = document.getElementById('scenario-mode-display').textContent === 'On';
+            const newMode = !currentMode;
+            updateScenarioMode(newMode);
+        });
+
+        // Function to set scenario mode value
+        document.getElementById('set-scenario-mode-value').addEventListener('click', function() {
+            const selectElement = document.getElementById('scenario-mode-value-select');
+            const newModeValue = selectElement.value;
+            updateScenarioModeValue(newModeValue);
+        });
+
+        // Function to update scenario mode on the server
+        function updateScenarioMode(newMode) {
+            fetch('https://hci.dannyduyufei.workers.dev/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ scenario_mode: newMode ? '1' : '0' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayScenarioMode(newMode);
+                }
+            });
+        }
+
+        // Function to update scenario mode value on the server
+        function updateScenarioModeValue(newModeValue) {
+            fetch('https://hci.dannyduyufei.workers.dev/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ scenario_mode_value: newModeValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayScenarioModeValue(newModeValue);
+                }
+            });
+        }
+
+
+        
 
         function displayScenarioModeValue(scenarioModeValue) {
             const scenarioModeValueNames = {
@@ -465,6 +538,7 @@
         window.onload = function() {
             console.log("Page is loading...");
             fetchROSData();
+            fetchDetailScenarioModeValue();
             // Refresh the data every second
             setInterval(fetchROSData, 1000);
             fetchPlaylist(); // This should also be called here
