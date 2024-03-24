@@ -308,6 +308,7 @@
                     }
                 })
                 .then(data => {
+                    console.log('Fetched data:', data);
                     // Update each field with the corresponding data
                     document.getElementById('detected-people').innerText = data.Detected_Human || "No data";
                     document.getElementById('image-status').innerText = data.Image_Status || "No data";
@@ -556,7 +557,7 @@
             console.log("Page loaded. Initializing data fetch and setting up intervals.");
             fetchDetailScenarioModeValue();
             // Refresh the data every second
-            setInterval(fetchROSData, 1000);
+            setInterval(fetchROSData, 2000);
             fetchPlaylist(); // This should also be called here
         };
     </script>
