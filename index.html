@@ -174,12 +174,8 @@
 
     <script>
         function displayScenarioMode(scenarioMode) {
-
-            console.log(typeof scenarioMode); // Add this line
-            scenarioMode = String(scenarioMode).replace(/^"|"$/g, ''); // Ensure string type
-            const modeIsOn = scenarioMode === 'true';
-            console.log(`Updating scenario mode display to: ${modeIsOn ? 'On' : 'Off'}`);
-            document.getElementById('scenario-mode-display').textContent = modeIsOn ? 'On' : 'Off';
+            console.log(`Updating scenario mode display to: ${scenarioMode ? 'On' : 'Off'}`);
+                document.getElementById('scenario-mode-display').textContent = scenarioMode ? 'On' : 'Off';
         }
 
 
@@ -327,7 +323,7 @@
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                     document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
-                    displayScenarioMode(data.scenario_mode === '1'); //displayScenarioMode(data.scenario_mode === '1');
+                    displayScenarioMode(data.scenario_mode);//displayScenarioMode(data.scenario_mode === '1');
                     displayScenarioModeValue(data.scenario_mode_value);
                     displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
                 })
