@@ -171,7 +171,8 @@
                 '2': 'Person Disengaged',
                 '3': 'Auto Alignment On'
             };
-            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValue] || 'Unknown';
+            const scenarioModeValueStr = String(scenarioModeValue);
+            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValueStr] || 'Unknown';
         }
 
         function displayDetailScenarioModeValue(detailScenarioModeValue) {
