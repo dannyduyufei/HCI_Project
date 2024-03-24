@@ -174,8 +174,11 @@
 
     <script>
         function displayScenarioMode(scenarioMode) {
-            console.log(`Updating scenario mode display to: ${scenarioMode ? 'On' : 'Off'}`);
-                document.getElementById('scenario-mode-display').textContent = scenarioMode ? 'On' : 'Off';
+            // Parse the JSON string to get the actual Boolean value
+            const mode = JSON.parse(scenarioMode);
+            const modeDisplay = mode ? 'On' : 'Off';
+            console.log(`Updating scenario mode display to: ${modeDisplay}`);
+            document.getElementById('scenario-mode-display').textContent = modeDisplay;
         }
 
 
@@ -210,7 +213,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: JSON.stringify(newMode ? 'true' : 'false') })
+                body: JSON.stringify({ scenario_mode: newMode }) 
             })
             .then(response => response.json())
             .then(data => {
