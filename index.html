@@ -321,7 +321,7 @@
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                     document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
-                    displayScenarioMode(data.scenario_mode === '1');
+                    displayScenarioMode(data.scenario_mode); //displayScenarioMode(data.scenario_mode === '1');
                     displayScenarioModeValue(data.scenario_mode_value);
                     displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
                 })
