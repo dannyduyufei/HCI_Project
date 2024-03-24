@@ -174,9 +174,12 @@
 
     <script>
         function displayScenarioMode(scenarioMode) {
-            console.log(`Updating scenario mode display to: ${scenarioMode ? 'On' : 'Off'}`);
-            document.getElementById('scenario-mode-display').textContent = scenarioMode ? 'On' : 'Off';
+            // Remove extra quotes and compare to the string "true"
+            const modeIsOn = scenarioMode.replace(/^"|"$/g, '') === 'true';
+            console.log(`Updating scenario mode display to: ${modeIsOn ? 'On' : 'Off'}`);
+            document.getElementById('scenario-mode-display').textContent = modeIsOn ? 'On' : 'Off';
         }
+
 
         // Function to fetch only Detail_scenario_mode_value from the server
         function fetchDetailScenarioModeValue() {
@@ -209,7 +212,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: newMode ? 'true' : 'false' })
+                body: JSON.stringify({ scenario_mode: JSON.stringify(newMode ? 'true' : 'false') })
             })
             .then(response => response.json())
             .then(data => {
