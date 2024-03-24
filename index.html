@@ -201,19 +201,24 @@
 
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
-
+            const modeValue = newMode ? 'true' : 'false'; // Use true/false as string
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ scenario_mode: newMode })
+                body: JSON.stringify({ scenario_mode: modeValue  })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    displayScenarioMode(newMode);
-                }
+                        // After successfully updating, we fetch the detail scenario mode value again
+                        // to ensure we're displaying the updated mode
+                        fetchROSData();
+                    } else {
+                        // If not successful, log or alert the user
+                        console.error('Failed to update scenario mode:', data);
+                    }
             });
         }
 
