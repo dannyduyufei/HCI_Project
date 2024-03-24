@@ -202,6 +202,8 @@
 
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
+
+            const modeValue = newMode ? '1' : '0';
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
@@ -219,6 +221,7 @@
 
         // Function to update scenario mode value on the server
         function updateScenarioModeValue(newModeValue) {
+            const modeValue = String(newModeValue);
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
@@ -229,7 +232,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    displayScenarioModeValue(newModeValue);
+                    (newModeValue);
                 }
             });
         }
@@ -237,7 +240,9 @@
 
         
 
-        function displayScenarioModeValue(scenarioModeValue) {
+        function (scenarioModeValue) {
+            scenarioModeValue = scenarioModeValue.replace(/^"|"$/g, '');
+            
             const scenarioModeValueNames = {
                 '0': 'Default',
                 '1': 'Person Engaged',
@@ -305,7 +310,7 @@
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                     document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
                     displayScenarioMode(data.scenario_mode === '1');
-                    displayScenarioModeValue(data.scenario_mode_value);
+                    (data.scenario_mode_value);
                     displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
                 })
                 .catch(error => {
