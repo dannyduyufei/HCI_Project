@@ -216,14 +216,14 @@
                         // to ensure we're displaying the updated mode
                         displayScenarioMode(newMode);
                     } else {
-                        // If not successful, log or alert the user
-                        displayScenarioMode(!newMode); // This will display the opposite of newMode
+                        // Handle failure
                         console.error('Failed to update scenario mode:', data);
+                        alert('Failed to update scenario mode. Please try again.');
                     }
             })
                 .catch(error => {
                     console.error('Error updating scenario mode:', error);
-                    displayScenarioMode(!newMode); // Revert to the original state in case of error
+                    alert('Error updating scenario mode. Please check your network connection.');
                 });
         }
 
