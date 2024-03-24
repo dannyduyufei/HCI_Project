@@ -238,19 +238,19 @@
             fetch('https://hci.dannyduyufei.workers.dev/scenario_mode')
                 .then(response => response.text())
                 .then(scenarioMode => {
-                  displayScenarioMode(scenarioMode === 'true');
+                  displayScenarioMode(data.scenarioMode === 'true');
                 });
             
               fetch('https://hci.dannyduyufei.workers.dev/scenario_mode_value')
                 .then(response => response.text())
                 .then(scenarioModeValue => {
-                  displayScenarioModeValue(scenarioModeValue);
+                  displayScenarioModeValue(data.scenarioModeValue);
                 });
             
               fetch('https://hci.dannyduyufei.workers.dev/Detail_scenario_mode_value')
                 .then(response => response.text())
                 .then(detailScenarioModeValue => {
-                  displayDetailScenarioModeValue(detailScenarioModeValue);
+                  displayDetailScenarioModeValue(data.detailScenarioModeValue);
                 });
         }
 
