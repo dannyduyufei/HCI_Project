@@ -311,14 +311,14 @@
                     document.getElementById('caption').innerText = data.Captioning || "No data";
                     document.getElementById('ai-response').innerText = data.AI_Response || "No data";
                     const emotionCode = data.Emotion_Response || "No data";
-                    console.log('Emotion code from server:', emotionCode); // Check the actual emotion code received
-                    console.log('Converted emotion :', convertEmotionCodeToWord(emotionCode)); // Check the conversion result
+                    // console.log('Emotion code from server:', emotionCode); // Check the actual emotion code received
+                    // console.log('Converted emotion :', convertEmotionCodeToWord(emotionCode)); // Check the conversion result
                     document.getElementById('emotion-response').innerText = convertEmotionCodeToWord(emotionCode);
                     document.getElementById('speaker-status').innerText = data.Speaker_Status || "No data";
                     document.getElementById('movement-status').innerText = data.Movement_Status || "No data";
                     document.getElementById('response-duration').innerText = data.Response_Duration || "No data"; 
                     displayScenarioMode(data.scenario_mode === '1');
-                    (data.scenario_mode_value);
+                    displayScenarioModeValue(data.scenario_mode_value);
                     displayDetailScenarioModeValue(data.Detail_scenario_mode_value);
                 })
                 .catch(error => {
