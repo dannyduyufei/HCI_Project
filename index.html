@@ -174,8 +174,10 @@
 
     <script>
         function displayScenarioMode(scenarioMode) {
-            // Remove extra quotes and compare to the string "true"
-            const modeIsOn = scenarioMode.replace(/^"|"$/g, '') === 'true';
+
+            console.log(typeof scenarioMode); // Add this line
+            scenarioMode = String(scenarioMode).replace(/^"|"$/g, ''); // Ensure string type
+            const modeIsOn = scenarioMode === 'true';
             console.log(`Updating scenario mode display to: ${modeIsOn ? 'On' : 'Off'}`);
             document.getElementById('scenario-mode-display').textContent = modeIsOn ? 'On' : 'Off';
         }
