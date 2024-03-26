@@ -103,16 +103,6 @@
             color: white;
             margin-left: 30px;
         }
-
-        .mode-button {
-          background-color: green; /* default background color for unselected state */
-          /* Add other styling for the buttons here */
-        }
-        
-        .mode-button.selected {
-          background-color: red; /* background color for selected state */
-        }
-
         
     </style>
 </head>
@@ -162,12 +152,13 @@
             <p><strong>Scenario Mode:</strong> <span id="scenario-mode-display">Off</span></p>
     
             <!-- Set scenario mode value -->
-            <div id="scenario-mode-buttons">
-                <button class="mode-button" data-mode-value="0">Default</button>
-                <button class="mode-button" data-mode-value="1">Person Engaged</button>
-                <button class="mode-button" data-mode-value="2">Person Disengaged</button>
-                <button class="mode-button" data-mode-value="3">Auto Alignment</button>
-            </div>
+            <select id="scenario-mode-value-select">
+                <option value="0">Default</option>
+                <option value="1">Person Engaged</option>
+                <option value="2">Person Disengaged</option>
+                <option value="3">Auto Alignment On</option>
+            </select>
+            <button id="set-scenario-mode-value">Set Scenario Mode Value</button>
             <p><strong>Scenario Mode Value:</strong> <span id="scenario-mode-value-display">Default</span></p>
     
             <!-- Display detail scenario mode value -->
@@ -207,7 +198,12 @@
             updateScenarioMode(!currentMode);
         });
 
-        
+        // Function to set scenario mode value
+        document.getElementById('set-scenario-mode-value').addEventListener('click', function() {
+            const selectElement = document.getElementById('scenario-mode-value-select');
+            const newModeValue = selectElement.value;
+            updateScenarioModeValue(newModeValue);
+        });
 
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
@@ -240,6 +236,7 @@
 
         // Function to update scenario mode value on the server
         function updateScenarioModeValue(newModeValue) {
+            
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
@@ -251,37 +248,24 @@
             .then(data => {
                 if (data.success) {
                     displayScenarioModeValue(newModeValue);
-                    // Change button backgrounds
-                    document.querySelectorAll('.mode-button').forEach(button => {
-                        button.style.backgroundColor = button.getAttribute('data-mode-value') === newModeValue ? 'red' : 'green';
-                    });
                 }
             });
+        }
 
 
         
 
         function displayScenarioModeValue(scenarioModeValue) {
-            // Update the display of the scenario mode value
+            scenarioModeValue = scenarioModeValue.replace(/^"|"$/g, '');
+            
             const scenarioModeValueNames = {
                 '0': 'Default',
                 '1': 'Person Engaged',
                 '2': 'Person Disengaged',
                 '3': 'Auto Alignment On'
             };
-            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValue] || 'Unknown';
-        
-            // Update button backgrounds based on the new value
-            document.querySelectorAll('.mode-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const newModeValue = this.getAttribute('data-mode-value');
-                    updateScenarioModeValue(newModeValue);
-                    document.querySelectorAll('.mode-button').forEach(b => {
-                        b.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                });
-            });
+            const scenarioModeValueStr = String(scenarioModeValue);
+            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValueStr] || 'Unknown';
         }
 
         function displayDetailScenarioModeValue(detailScenarioModeValue) {
@@ -351,19 +335,6 @@
                 });
             
         }
-
-        // Function to handle scenario mode button clicks
-            document.querySelectorAll('.mode-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const newModeValue = this.getAttribute('data-mode-value');
-                    updateScenarioModeValue(newModeValue);
-                    // Change button backgrounds
-                    document.querySelectorAll('.mode-button').forEach(b => {
-                        b.classList.remove('selected'); // remove the 'selected' class from all buttons
-                    });
-                    this.classList.add('selected'); // add 'selected' class to the clicked button
-                });
-            });
 
         document.getElementById('confirm-button').addEventListener('click', function() {
             const title = document.getElementById('line-title').value.trim();
@@ -575,16 +546,7 @@
           });
         }
 
-        function fetchCurrentScenarioMode() {
-            // Replace the URL with your API endpoint that returns the current scenario mode value
-            fetch('https://hci.dannyduyufei.workers.dev/currentScenarioMode')
-                .then(response => response.json())
-                .then(data => {
-                    if(data && data.scenario_mode_value) {
-                        updateScenarioModeValue(data.scenario_mode_value);
-                    }
-                });
-        }
+
 
 
 
@@ -601,7 +563,6 @@
             // Refresh the data every second
             setInterval(fetchROSData, 1000);
             fetchPlaylist(); // This should also be called here
-            fetchCurrentScenarioMode();
         };
     </script>
 </body>
