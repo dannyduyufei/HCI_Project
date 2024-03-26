@@ -152,13 +152,12 @@
             <p><strong>Scenario Mode:</strong> <span id="scenario-mode-display">Off</span></p>
     
             <!-- Set scenario mode value -->
-            <select id="scenario-mode-value-select">
-                <option value="0">Default</option>
-                <option value="1">Person Engaged</option>
-                <option value="2">Person Disengaged</option>
-                <option value="3">Auto Alignment On</option>
-            </select>
-            <button id="set-scenario-mode-value">Set Scenario Mode Value</button>
+            <div id="scenario-mode-buttons">
+                <button class="mode-button" data-mode-value="0">Default</button>
+                <button class="mode-button" data-mode-value="1">Person Engaged</button>
+                <button class="mode-button" data-mode-value="2">Person Disengaged</button>
+                <button class="mode-button" data-mode-value="3">Auto Alignment</button>
+            </div>
             <p><strong>Scenario Mode Value:</strong> <span id="scenario-mode-value-display">Default</span></p>
     
             <!-- Display detail scenario mode value -->
@@ -198,12 +197,7 @@
             updateScenarioMode(!currentMode);
         });
 
-        // Function to set scenario mode value
-        document.getElementById('set-scenario-mode-value').addEventListener('click', function() {
-            const selectElement = document.getElementById('scenario-mode-value-select');
-            const newModeValue = selectElement.value;
-            updateScenarioModeValue(newModeValue);
-        });
+        
 
         // Function to update scenario mode on the server
         function updateScenarioMode(newMode) {
@@ -236,7 +230,6 @@
 
         // Function to update scenario mode value on the server
         function updateScenarioModeValue(newModeValue) {
-            
             fetch('https://hci.dannyduyufei.workers.dev/update', {
                 method: 'PUT',
                 headers: {
@@ -248,9 +241,12 @@
             .then(data => {
                 if (data.success) {
                     displayScenarioModeValue(newModeValue);
+                    // Change button backgrounds
+                    document.querySelectorAll('.mode-button').forEach(button => {
+                        button.style.backgroundColor = button.getAttribute('data-mode-value') === newModeValue ? 'red' : 'green';
+                    });
                 }
             });
-        }
 
 
         
