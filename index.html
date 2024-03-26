@@ -103,6 +103,16 @@
             color: white;
             margin-left: 30px;
         }
+
+        .mode-button {
+          background-color: green; /* default background color for unselected state */
+          /* Add other styling for the buttons here */
+        }
+        
+        .mode-button.selected {
+          background-color: red; /* background color for selected state */
+        }
+
         
     </style>
 </head>
@@ -252,16 +262,23 @@
         
 
         function displayScenarioModeValue(scenarioModeValue) {
-            scenarioModeValue = scenarioModeValue.replace(/^"|"$/g, '');
-            
+            // Update the display of the scenario mode value
             const scenarioModeValueNames = {
                 '0': 'Default',
                 '1': 'Person Engaged',
                 '2': 'Person Disengaged',
                 '3': 'Auto Alignment On'
             };
-            const scenarioModeValueStr = String(scenarioModeValue);
-            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValueStr] || 'Unknown';
+            document.getElementById('scenario-mode-value-display').textContent = scenarioModeValueNames[scenarioModeValue] || 'Unknown';
+        
+            // Update button backgrounds based on the new value
+            document.querySelectorAll('.mode-button').forEach(button => {
+                if (button.getAttribute('data-mode-value') === scenarioModeValue) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
         }
 
         function displayDetailScenarioModeValue(detailScenarioModeValue) {
@@ -331,6 +348,19 @@
                 });
             
         }
+
+        // Function to handle scenario mode button clicks
+            document.querySelectorAll('.mode-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const newModeValue = this.getAttribute('data-mode-value');
+                    updateScenarioModeValue(newModeValue);
+                    // Change button backgrounds
+                    document.querySelectorAll('.mode-button').forEach(b => {
+                        b.classList.remove('selected'); // remove the 'selected' class from all buttons
+                    });
+                    this.classList.add('selected'); // add 'selected' class to the clicked button
+                });
+            });
 
         document.getElementById('confirm-button').addEventListener('click', function() {
             const title = document.getElementById('line-title').value.trim();
