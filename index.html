@@ -273,11 +273,14 @@
         
             // Update button backgrounds based on the new value
             document.querySelectorAll('.mode-button').forEach(button => {
-                if (button.getAttribute('data-mode-value') === scenarioModeValue) {
-                    button.classList.add('selected');
-                } else {
-                    button.classList.remove('selected');
-                }
+                button.addEventListener('click', function() {
+                    const newModeValue = this.getAttribute('data-mode-value');
+                    updateScenarioModeValue(newModeValue);
+                    document.querySelectorAll('.mode-button').forEach(b => {
+                        b.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
             });
         }
 
@@ -572,7 +575,16 @@
           });
         }
 
-
+        function fetchCurrentScenarioMode() {
+            // Replace the URL with your API endpoint that returns the current scenario mode value
+            fetch('https://hci.dannyduyufei.workers.dev/currentScenarioMode')
+                .then(response => response.json())
+                .then(data => {
+                    if(data && data.scenario_mode_value) {
+                        updateScenarioModeValue(data.scenario_mode_value);
+                    }
+                });
+        }
 
 
 
@@ -589,6 +601,7 @@
             // Refresh the data every second
             setInterval(fetchROSData, 1000);
             fetchPlaylist(); // This should also be called here
+            fetchCurrentScenarioMode();
         };
     </script>
 </body>
